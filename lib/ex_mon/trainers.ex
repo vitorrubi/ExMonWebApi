@@ -19,13 +19,19 @@ defmodule ExMon.Trainer do
   |> apply_action(:insert)
  end
 #changeset é utilizado como um sistema de validação, com vários recursos e mecanismos para ajudar a fazer o tracking dos erros
- def changeset(params) do
-    %__MODULE__{}
-  |> cast(params, @required_params)
-  |> validate_required(@required_params)
-  |> validate_length(:password, min: 6)
-  |> put_pass_hash()
- end
+
+ def changeset(params) do: create_changeset(%__MODULE__{}, params)
+ def changeset(trainer, params) do: create_changeset(trainer, params)
+
+end
+
+defp create_changeset(module_or_trainer, params) do
+  module_or_trainer
+|> cast(params, @required_params)
+|> validate_required(@required_params)
+|> validate_length(:password, min: 6)
+|> put_pass_hash()
+end
 
  defp put_pass_hash(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
   change(changeset, Pbkdf2.add_hash(password))
