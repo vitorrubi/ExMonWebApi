@@ -1,19 +1,16 @@
-defmodule ExMon.Pokemon do
-  @keys [:id, :name, :weight, :types]
+defmodule ExMon.Trainer.Pokemon do
+  use Ecto.Schema
+  import Ecto.Changeset
 
-  @enforce_keys @keys
-  @derive Jason.Encoder
-  defstruct @keys
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
+  @foreign_key_type Ecto.UUID
 
-
-  def build (%{"id" => id, "name" => name, "weight" => weight, "types" => types}) do
-    %__MODULE__{
-      id: id,
-      name: name,
-      weight: weight,
-      types: parse_types(types)
-    }
+  schema "pokemons" do
+    field :name, :string
+    field :nickname, :string
+    field :weight, :integer
+    field :types, {:array, :string}
+    belongs_to(:trainer, Trainer)
+    timestamps()
   end
-
-  defp parse_types(types), do: Enum.map(types, fn item -> item["type"]["name"] end)
 end
