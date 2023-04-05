@@ -2,7 +2,7 @@ defmodule ExMon.Pokemon do
   @keys [:id, :name, :weight, :types]
 
   @enforce_keys @keys
-
+  @derive Jason.Encoder
   defstruct @keys
 
 
