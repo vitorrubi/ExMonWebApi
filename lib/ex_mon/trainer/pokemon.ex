@@ -13,4 +13,19 @@ defmodule ExMon.Trainer.Pokemon do
     belongs_to(:trainer, Trainer)
     timestamps()
   end
+
+  @required [:name, :nickname, :weight, :trainer_id]
+
+  def build(params) do
+    params
+    |> changeset()
+    |> apply_action(:insert)
+  end
+
+  def changeset(params) do
+    %__MODULE__{}
+    |> cast(params, @required)
+    |> validate_required(@required)
+    |> validate_length(:nickname, min: 2)
+  end
 end
