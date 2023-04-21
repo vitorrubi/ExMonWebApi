@@ -4,7 +4,7 @@ defmodule ExMon.Trainer.Pokemon.Create do
   alias ExMon.PokeApi.Client
   alias ExMon.Repo
 
-  def call(%¨{"name" => name} = params)  do
+  def call(%{"name" => name} = params)  do
     name
     |> Client.get_pokemon()
     |> handle_response(params)
@@ -20,7 +20,7 @@ defmodule ExMon.Trainer.Pokemon.Create do
 
   defp create_pokemon(%Pokemon{name: name, weight: weight, types: types}, %{
     "nickmane" => nickname,
-    "trainer_id" = trainer_id
+    "trainer_id" => trainer_id
      }) do
        params = %{
         name: name,
